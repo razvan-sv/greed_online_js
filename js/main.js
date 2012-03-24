@@ -9,7 +9,8 @@ var _default_points = {
 
 var default_dice_faces = [1, 2, 3, 4, 5, 6]
 
-function Player(name){
+function Player(id, name){
+  this.id    = id
   this.name  = name
   this.score = 0
 }
@@ -29,7 +30,7 @@ generate_dice_pool = function(dice_faces){
   return dice_pool
 }
 
-bind_roll = function(player_id, array_of_faces){
+bind_roll = function(player, array_of_faces){
   $("#roll-button").click(function(){
     var _number_picks    = roll(array_of_faces)
     var _dice_images     = []
@@ -55,20 +56,11 @@ bind_roll = function(player_id, array_of_faces){
 
     $("#score").html(_score)
     $("#results").html(_dice_images.join(" "))
-
-    p1.score += _score
-    console.log(p1.score)
-
-    // localStorage
-    update_player_score(player_id, _score)
-    $("#" + player_id + "_score").html(localStorage.getObject("greed_online")[0][player_id].score)
-    //exit()
+    player.score += _score
+    $("#player_" + player.id + "_score").html(player.score)
   });
 }
 
-exit = function(){
-  console.log(p1)
-}
 // array_of_faces
 roll = function(array_of_faces){
   dice_pool = generate_dice_pool(array_of_faces) //don't generate this everytime
@@ -120,39 +112,32 @@ partial_score = function(number_frequency, triple_score, single_score){
 }
 
 collect_players = function(){
-  number_of_players = prompt("Greetings! \nPlease enter the number of players. \nMax number is 4", 0)
+  number_of_players = 10
+  while (number_of_players > 4){
+    number_of_players = prompt("Greetings! \nPlease enter the number of players. \nMax number is 4", 0)
+  }
   if (number_of_players > 0){
-    players           = []
+    window.players    = {}
     players_to_html   = []
     data              = {}
 
-    for (var i=0; i<number_of_players; i++){
-      players.push(prompt("Player " + (i+1), "Player " + (i+1)))
+    for (var i=1; i<=number_of_players; i++){
+      name = prompt("Enter Player " + i + "'s name", "Player " + i)
+      players["player_" + i] = new Player(i, name)
+      players_to_html.push('<tr>' +
+        '<td>' + name + '</td>' +
+        '<td id="player_'+ i + '_score">0</td>' +
+        '</tr>'
+      )
     }
     $("#start-game").hide()
     $("#roll-button").show()
     $(".content").show()
-    for (var i=0; i<players.length; i++){
-      data["player_" + (i + 1)] = {"name":players[i], "score": 0}
-      players_to_html.push('<tr>' + 
-        '<td>' + players[i] + '</td>' + 
-        '<td id="player_'+ (i+1) + '_score">0</td>' + 
-        '</tr>'
-      )
-    }
     $("#players").html(players_to_html.join(""))    
-    localStorage.setObject("greed_online", [data, {"rolling": "player_1", "times_rolled": 0}])
+    localStorage.setObject("greed_online", [data, {"rolling": players.player_1, "times_rolled": 0}])
     //console.log(localStorage.getObject("greed_online"))
     // local storage stuff
   }
-}
-
-update_player_score = function(player_id, score){
-  storage = localStorage.getObject("greed_online")
-  //console.log(storage[0][player_id].score)
-  //console.log(player_id)
-  storage[0][player_id].score += score
-  localStorage.setObject("greed_online", storage)
 }
 
 bind_start_game = function(){
@@ -167,6 +152,5 @@ run_game = function(){
 }
 
 $(document).ready(function(){
-  window.p1 = new Player("Rz")
   bind_start_game()
 })
