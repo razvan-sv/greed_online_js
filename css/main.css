@@ -1,0 +1,43 @@
+.dice{
+
+}
+.single_dice{
+  background-image: url("../img/dice_faces.jpg");
+  width: 100px;
+  height:100px;
+  margin: 5px;
+  float: left;
+}
+.scoring{
+  background-color: green;
+  width: 110px;
+  height: auto;
+  margin: 5px;
+  float: left;
+}
+.face_1{
+  background-position: -265px -155px;
+}
+.face_2{
+  background-position: -135px -155px;
+}
+.face_3{
+  background-position: 0px -154px;
+}
+.face_4{
+  background-position: -265px 0px;
+}
+.face_5{
+  background-position: -135px 0px;
+}
+.face_6{
+  background-position: 0px 0px;
+}
+
+.hide{
+  display: none;
+}
+
+.show{
+  display: block;
+}
