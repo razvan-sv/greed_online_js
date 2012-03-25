@@ -1,5 +1,21 @@
-.dice{
-
+/*html{
+  font-family: Arial, "MS Trebuchet", sans-serif;
+}
+h1{
+  font-weight:bold;
+  
+}*/
+.content{
+  width:800px;
+  height:auto;
+}
+.content-players{
+  width:200px;
+  float:left;
+}
+.content-dice{
+  width:600px;
+  float:left;
 }
 .single_dice{
   background-image: url("../img/dice_faces.jpg");
@@ -33,11 +49,21 @@
 .face_6{
   background-position: 0px 0px;
 }
-
+.rolling-player{
+  color:green;
+}
 .hide{
   display: none;
 }
-
 .show{
   display: block;
+}
+.pull-right{
+  float:right;
+}
+.pull-left{
+  float:left;
+}
+.clear{
+  clear:both;
 }
