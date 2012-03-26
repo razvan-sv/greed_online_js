@@ -7,32 +7,44 @@
 <link rel="stylesheet" href="css/main.css" type="text/css">
 
 <body>
-  <h1>Welcome to the Greed Game !</h1>
-  <button type="button" id="start-game">Start the Game</button>  
-  <div class="content hide">
-    <h3>Good Luck !</h3>
-    <div class="content-players">
-      <table>
-        <thead>
-          <th>Player</th>
-          <th>Score</th>
-        </thead>
-        <tbody id="players">
-        </tbody>
-      </table>
-    </div>
-    <div class="content-dice">
-      <h2>Round <span id="round">1</span></h2>
-      <h3>Currently <span class="rolling-player"></span> is rolling</h3>
-      <button type="button" id="roll-button" class="hide">Roll!</button>
-      <div class="special-buttons hide">
-        <button type="button" id="re-roll-button">Keep &amp; Re-roll</button>
-        <button type="button" id="next-player-button">Keep &amp; Next Player</button>
+  <div class="content">
+    <h1>Welcome to the Greed Game !</h1>
+    <button type="button" id="start-game">Start the Game</button>
+    <div class="playground hide">
+      <h3>Good Luck !</h3>
+      <div class="content-players">
+        <table>
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody id="players"></tbody>
+        </table>
       </div>
-      <p class="msg">Rolled score:  <span id="rolled-score">0</span></p>
-      <p class="msg">Pending score: <span id="pending-score">0</span></p>
-      <div id="results"></div>
-    </div>    
+      <div class="content-dice">
+        <div class="playing-board">
+          <h2>Round <span class="round">1</span></h2>
+          <h3>Currently <span class="rolling-player">&nbsp;</span> is rolling</h3>
+          <button type="button" id="roll-button" class="hide">Roll!</button>
+          <div class="special-buttons hide">
+            <button type="button" id="re-roll-button">Keep &amp; Re-roll</button>
+            <button type="button" id="next-player-button">Keep &amp; Next Player</button>
+          </div>
+          <p class="hide zero-score-message">Bummer, you scored 0 and lost all pending points gathered this round</p>
+          <p>Rolled score:  <span id="rolled-score">0</span></p>
+          <p>Pending score: <span id="pending-score">0</span></p>
+          <div id="results"></div>
+        </div>
+        <div class="winner hide">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+  <div class="overlay hide">&nbsp;</div>
+  <div class="animation">
+    <h1 class="hide" id="round-number">Round <span class="round">1</span></h1>
+    <h1 class="hide" id="fight-animation">FIGHT !</h1>
   </div>
 </body>
 </html>
