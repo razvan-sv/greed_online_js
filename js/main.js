@@ -57,9 +57,9 @@ process_rolled_dice = function(rolled_dice, re_roll){
       _processed_picks.push(_pick)
     }
     
-    //if (_partial_results.triple != 0) abc = 3 
+     
     _should_color = (_partial_results.triple != 0 || _partial_results.rest != 0)
-    
+    if (_should_color == false) _remaining_dice_number++
     // if (_should_color){
       // if (_colored_dice[_pick.toString()] == undefined){
         // //console.log(_pick + " does not exist")
