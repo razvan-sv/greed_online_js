@@ -1,3 +1,11 @@
+/*
+ * TODO
+ * 1. Hide the re-roll button if remaining_dice_number = 0
+ * 2. Hide the next_player button if a player didn't rolled 300 points until the current round
+ * 3. Tie round
+ * 4. Comments + Refactorings
+ */
+
 // How many rounds were played
 var round = 1
 var active_animation = false
@@ -42,7 +50,7 @@ roll = function(number_of_dice){
 process_rolled_dice = function(rolled_dice, re_roll){
   var _dice_images     = []
   var _processed_picks = []
-  //var _colored_dice    = {}
+  var _colored_dice    = {}
   var _score           = 0
   var _remaining_dice_number  = 0
   _dice_frequency = rolled_dice.to_frequency()
@@ -57,34 +65,28 @@ process_rolled_dice = function(rolled_dice, re_roll){
       _processed_picks.push(_pick)
     }
     
-     
     _should_color = (_partial_results.triple != 0 || _partial_results.rest != 0)
-    if (_should_color == false) _remaining_dice_number++
-    // if (_should_color){
-      // if (_colored_dice[_pick.toString()] == undefined){
-        // //console.log(_pick + " does not exist")
-        // _colored_dice[_pick.toString()] = 1
-      // }else{
-        // //console.log("~" + _colored_dice[_pick.toString()])
-        // //console.log("~" + _dice_frequency[_pick.toString()])
-        // if (_colored_dice[_pick.toString()] == _dice_frequency[_pick.toString()]){
-          // //console.log(_pick + " EQL")
-          // _should_color = false
-        // }else{
-          // ///console.log(_pick + " Increment")
-          // _colored_dice[_pick.toString()]++
-        // }
-      // }
-    // } else {
-      // console.log("WTF")
-      // _remaining_dice_number++
-    // }
-    // console.log("-------------")
-    // BUG : 4 two's, 4 three's
+    if (_should_color){
+      if (_colored_dice[_pick] == undefined){
+        _colored_dice[_pick] = 1
+      } else {
+        if (_colored_dice[_pick] < _partial_results.triple + _partial_results.rest){
+          _colored_dice[_pick]++
+        }else{
+          _should_color = false
+        }
+      }
+    } else {
+      _remaining_dice_number++
+    }
+     
     _dice_images.push(generate_dice_face(_pick, _should_color))
   }
 
-  if (_score > 0) manage_special_buttons("show")
+  if (_score > 0) {
+    manage_special_buttons("show")
+    manage_roll_button("hide")
+  }
   
   current_player.pending_score += _score
   current_player.remaining_dice_number = _remaining_dice_number
@@ -96,6 +98,7 @@ process_rolled_dice = function(rolled_dice, re_roll){
     $("#pending-score").html(current_player.pending_score)
     if (_score == 0) {
       $(".zero-score-message").show()
+      manage_special_buttons("hide")
       current_player.pending_score = 0
       setTimeout(change_player, 3000);
     }
@@ -165,10 +168,8 @@ manage_roll_button = function(action){
 manage_special_buttons = function(action){
   if(action == "show"){
     $(".special-buttons").show()
-    manage_roll_button("hide")
   }else{
     $(".special-buttons").hide()
-    manage_roll_button("show")
   }
 }
 
@@ -231,7 +232,8 @@ announce_winner = function(){
 // Redraw the playing board
 re_draw = function(){
   manage_special_buttons("hide") // hide the re-roll & next_player buttons and show the roll one.
-  $(".round").html(round) // update the round
+  manage_roll_button("show")    // show the the roll button
+  $(".round").html(round)      // update the round
   $(".rolling-player").html(current_player.name) // update the current rolling player
   $("#rolled-score").html(0)   // reset the score
   $("#pending-score").html(0) // reset the pending score
