@@ -27,12 +27,12 @@
         <div class="playing-board">
           <h2>Round <span class="round">1</span></h2>
           <h3>Currently <span class="rolling-player">&nbsp;</span> is rolling</h3>
-          <button type="button" id="roll-button" class="hide">Roll!</button>
-          <div class="special-buttons hide">
-            <button type="button" id="re-roll-button">Keep &amp; Re-roll</button>
-            <button type="button" id="next-player-button">Keep &amp; Next Player</button>
+          <button type="button" class="hide" id="roll-button">Roll!</button>
+          <div class="special-buttons">
+            <button type="button" class="hide" id="re-roll-button">Re-roll</button>
+            <button type="button" class="hide" id="next-player-button">Keep &amp; Next Player</button>
           </div>
-          <p class="hide zero-score-message">Bummer, you scored 0 and lost all pending points gathered this round</p>
+          <p class="hide zero-score-message">&nbsp;</p>
           <p>Rolled score:  <span id="rolled-score">0</span></p>
           <p>Pending score: <span id="pending-score">0</span></p>
           <div id="results"></div>
