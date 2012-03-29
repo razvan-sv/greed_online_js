@@ -1,13 +1,11 @@
 /*
  * TODO
- * 1. Hide the re-roll button if remaining_dice_number = 0
- * 2. Hide the next_player button if a player didn't rolled 300 points until the current round
- * 3. Tie round
- * 4. Comments + Refactorings
+ * 1. Comments + Refactorings
  */
 
 // How many rounds were played
 var round = 1
+var tie_round = false
 var active_animation = false
 
 // Tresholds
@@ -166,6 +164,7 @@ manage_zero_score_message = function(action){
     $(".zero-score-message").hide()
   }
 }
+
 manage_roll_button = function(action){
   (action == "show") ? $("#roll-button").show() : $("#roll-button").hide()
 }
@@ -229,9 +228,16 @@ change_round = function(){
       announce_winner()
     break;
     case "tie":
-      console.log("TIE")
+      set_current_player(players["player_1"])
+      final_round()
     break;
   }
+}
+
+final_round = function(){
+  tie_round = true
+  re_draw()
+  $(".round").html("Final Round") // update the round
 }
 
 // TODO: Comment
@@ -251,12 +257,16 @@ announce_winner = function(){
 re_draw = function(){
   manage_special_buttons("hide") // hide the re-roll & next_player buttons and show the roll one.
   manage_roll_button("show")    // show the the roll button
-  $(".round").html(round)      // update the round
+  $(".round").html("Round " + round)      // update the round
   $(".rolling-player").html(current_player.name) // update the current rolling player
   $("#rolled-score").html(0)   // reset the score
   $("#pending-score").html(0) // reset the pending score
   $("#results").html("")     // clean the previous dice results
   manage_zero_score_message("hide")
+}
+
+play_rolling_dice_sound = function(){
+  $("#sounds")[0].play()
 }
 
 play_round_fight_animation = function(){
@@ -277,7 +287,18 @@ play_round_fight_animation = function(){
 check_if_game_ended = function(){
   tie_players = []
   for (var player in players){
-    if (players[player].score > final_score_treshold) { tie_players.push(players[player]) }
+    if (tie_round){
+      if (tie_players.length == 0){
+        tie_players[0] = players[player]
+      }else{
+        if (players[player].score > tie_players[0].score){
+          tie_players[0] = players[player]
+        }
+      }
+    }else{
+      if (players[player].score >= final_score_treshold) { tie_players.push(players[player]) }
+    }
+    
   }
 
   if (tie_players.length > 1){
@@ -294,6 +315,7 @@ check_if_game_ended = function(){
 
 bind_roll_buttons = function(){
   $("#roll-button, #re-roll-button").click(function(){
+    play_rolling_dice_sound()
     rolled_dice = roll(current_player.remaining_dice_number)
     process_rolled_dice(rolled_dice, this.id == "re-roll-button")
   });
