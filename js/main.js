@@ -1,7 +1,6 @@
 /*
  * TODO
  * 1. Comments + Refactorings
- * 2. Some text
  */
 
 // How many rounds were played
